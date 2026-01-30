@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LC Application Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style type="text/css">
+        :root {
+            --primary: #34495E;
+            --secondary: #3498db;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: verdana, Tahoma, Geneva, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 10px;
+        }
+
+        /* Navigation */
+        .nav-container {
+            margin-bottom: 20px;
+            border-bottom: 2px ridge var(--primary);
+            padding-bottom: 10px;
+        }
+
+        .leftnav {
+            padding: 8px 15px;
+            background: white;
+            color: black;
+            font-family: verdana;
+            font-weight: bold;
+            font-size: 13px;
+            border: 2px var(--primary) ridge;
+            margin: 3px;
+            display: inline-block;
+            cursor: pointer;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .leftnav:hover {
+            background: #f0f0f0;
+        }
+
+        .leftnavon {
+            padding: 8px 15px;
+            background: yellow;
+            color: black;
+            font-family: verdana;
+            font-weight: bold;
+            font-size: 13px;
+            border: 2px var(--primary) ridge;
+            margin: 3px;
+            display: inline-block;
+            cursor: pointer;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        /* Data Cards */
+        .datacard {
+            border: 2px solid #ccc;
+            margin-top: 15px;
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .datacardtitle {
+            background: var(--primary);
+            color: white;
+            font-family: verdana;
+            font-weight: bold;
+            font-size: 14px;
+            padding: 10px;
+            border-bottom: 2px solid #ccc;
+        }
+
+        .datacard td {
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 13px;
+        }
+
+        .datacard tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Calendar Section */
+        .calendartitle {
+            background: var(--primary);
+            color: white;
+            font-family: verdana;
+            font-weight: bold;
+            font-size: 13px;
+            padding: 10px;
+            margin-top: 20px;
+            border: 2px solid #ccc;
+            border-bottom: none;
+        }
+
+        .calendarlist {
+            border: 2px solid #ccc;
+            border-top: none;
+            padding: 15px;
+            background: white;
+            list-style-type: none;
+        }
+
+        .calendarlist li {
+            padding: 8px 0;
+            border-bottom: 1px dashed #ddd;
+            font-size: 13px;
+        }
+
+        .calendarlist li:last-child {
+            border-bottom: none;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .status-draft { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        .status-submitted { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        .status-approved { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .status-rejected { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+        /* Buttons */
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-family: verdana;
+            margin: 2px;
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: white;
+            border: 2px ridge var(--secondary);
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px ridge var(--secondary);
+            color: var(--secondary);
+        }
+
+        .btn-outline:hover {
+            background: var(--secondary);
+            color: white;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid #ccc;
+            margin-bottom: 15px;
+        }
+
+        .page-title h2 {
+            font-size: 20px;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .page-title p {
+            color: #666;
+            font-size: 12px;
+        }
+
+        /* Content Area */
+        .content-area {
+            padding: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .top-bar {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="page-title">
+            <h2 id="pageTitle">LC Application Portal</h2>
+            <p id="pageSubtitle">Letter of Credit Application System</p>
+        </div>
+        <div>
+            <button class="btn btn-outline" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-container">
+        <a class="leftnavon" data-page="dashboard">Dashboard</a>
+        <a class="leftnav" data-page="new-application">New Application</a>
+        <a class="leftnav" data-page="applications">My Applications</a>
+        <a class="leftnav" data-page="company-info">Company Info</a>
+        <a class="leftnav" data-page="lc-application">LC Application</a>
+        <a class="leftnav" data-page="help">Help</a>
+        <a class="leftnav" data-page="settings">Settings</a>
+    </div>
+
+    <!-- Content Area -->
+    <div class="content-area">
+        <!-- Dashboard -->
+        <div id="dashboard" class="page-content active">
+            <div class="dashboard-grid">
+                <!-- Company Info Card -->
+                <table class="datacard">
+                    <tr>
+                        <td colspan="2" class="datacardtitle">
+                            <i class="fas fa-building"></i> Company Information
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Completion:</td>
+                        <td><strong id="companyStats">0%</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Status:</td>
+                        <td>Registration Required</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: center; padding: 15px;">
+                            <button class="btn btn-primary" data-page="company-info">
+                                <i class="fas fa-edit"></i> Update Info
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- LC Applications Card -->
+                <table class="datacard">
+                    <tr>
+                        <td colspan="2" class="datacardtitle">
+                            <i class="fas fa-file-contract"></i> LC Applications
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Total:</td>
+                        <td><strong id="lcStats">0</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Active:</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: center; padding: 15px;">
+                            <button class="btn btn-primary" data-page="new-application">
+                                <i class="fas fa-plus"></i> New Application
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Recent Application Card -->
+                <table class="datacard">
+                    <tr>
+                        <td colspan="2" class="datacardtitle">
+                            <i class="fas fa-history"></i> Recent Application
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Reference:</td>
+                        <td>LC-2024-00123</td>
+                    </tr>
+                    <tr>
+                        <td>Amount:</td>
+                        <td>$1,430,000</td>
+                    </tr>
+                    <tr>
+                        <td>Status:</td>
+                        <td><span class="status-badge status-approved">Approved</span></td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Upcoming Events -->
+            <div class="calendartitle">Upcoming Tasks</div>
+            <ul class="calendarlist">
+                <li><i class="fas fa-clock"></i> Complete company registration - Today</li>
+                <li><i class="fas fa-file-contract"></i> Submit LC-2024-00125 - Dec 15</li>
+                <li><i class="fas fa-users"></i> Update beneficiary info - Dec 18</li>
+                <li><i class="fas fa-clipboard-check"></i> Compliance review - Dec 20</li>
+            </ul>
+        </div>
+
+        <!-- Other Pages (Simplified for demo) -->
+        <div id="new-application" class="page-content" style="display: none;">
+            <table class="datacard">
+                <tr>
+                    <td colspan="2" class="datacardtitle">Start New LC Application</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="padding: 20px; text-align: center;">
+                        <p style="margin-bottom: 20px;">Select application type:</p>
+                        <button class="btn btn-primary" style="padding: 12px 25px;">
+                            <i class="fas fa-plus-circle"></i> Sight LC
+                        </button>
+                        <button class="btn btn-outline" style="padding: 12px 25px;">
+                            <i class="fas fa-plus-circle"></i> Usance LC
+                        </button>
+                        <p style="margin-top: 20px; color: #666; font-size: 12px;">
+                            <i class="fas fa-info-circle"></i> This will guide you through all required forms
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="applications" class="page-content" style="display: none;">
+            <table class="datacard">
+                <tr>
+                    <td colspan="4" class="datacardtitle">My LC Applications</td>
+                </tr>
+                <tr>
+                    <td><strong>Reference</strong></td>
+                    <td><strong>Amount</strong></td>
+                    <td><strong>Date</strong></td>
+                    <td><strong>Status</strong></td>
+                </tr>
+                <tr>
+                    <td>LC-2024-00123</td>
+                    <td>$500,000</td>
+                    <td>2024-01-15</td>
+                    <td><span class="status-badge status-approved">Approved</span></td>
+                </tr>
+                <tr>
+                    <td>LC-2024-00124</td>
+                    <td>$750,000</td>
+                    <td>2024-01-20</td>
+                    <td><span class="status-badge status-submitted">Submitted</span></td>
+                </tr>
+                <tr>
+                    <td>LC-2024-00125</td>
+                    <td>$1,200,000</td>
+                    <td>2024-01-25</td>
+                    <td><span class="status-badge status-draft">Draft</span></td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Help Page -->
+        <div id="help" class="page-content" style="display: none;">
+            <table class="datacard">
+                <tr>
+                    <td colspan="2" class="datacardtitle">Help & Support</td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td>support@lcportal.com</td>
+                </tr>
+                <tr>
+                    <td>Phone:</td>
+                    <td>+1 (555) 123-4567</td>
+                </tr>
+                <tr>
+                    <td>Hours:</td>
+                    <td>Mon-Fri, 9AM-5PM EST</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="padding: 15px; text-align: center;">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-download"></i> Download User Guide
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Settings Page -->
+        <div id="settings" class="page-content" style="display: none;">
+            <table class="datacard">
+                <tr>
+                    <td colspan="2" class="datacardtitle">User Settings</td>
+                </tr>
+                <tr>
+                    <td>Name:</td>
+                    <td>John Doe</td>
+                </tr>
+                <tr>
+                    <td>Company:</td>
+                    <td>Global Trading Co.</td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td>john.doe@globaltrading.co</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center; padding: 15px;">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Simple navigation
+        const navItems = document.querySelectorAll('.leftnav, .leftnavon');
+        const pageContents = document.querySelectorAll('.page-content');
+        
+        navItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const pageId = this.getAttribute('data-page');
+                
+                // Update navigation
+                navItems.forEach(nav => {
+                    nav.className = 'leftnav';
+                });
+                this.className = 'leftnavon';
+                
+                // Update page content
+                pageContents.forEach(page => {
+                    page.style.display = 'none';
+                });
+                
+                const pageElement = document.getElementById(pageId);
+                if (pageElement) {
+                    pageElement.style.display = 'block';
+                    
+                    // Update page title
+                    const pageTitle = document.getElementById('pageTitle');
+                    const pageSubtitle = document.getElementById('pageSubtitle');
+                    
+                    const titles = {
+                        'dashboard': { title: 'LC Application Portal', subtitle: 'Dashboard Overview' },
+                        'new-application': { title: 'New Application', subtitle: 'Start a new LC application' },
+                        'applications': { title: 'My Applications', subtitle: 'View and manage applications' },
+                        'company-info': { title: 'Company Information', subtitle: 'Update company details' },
+                        'lc-application': { title: 'LC Application', subtitle: 'Create Letter of Credit' },
+                        'help': { title: 'Help & Support', subtitle: 'Get assistance and documentation' },
+                        'settings': { title: 'Settings', subtitle: 'Manage your account settings' }
+                    };
+                    
+                    if (titles[pageId]) {
+                        pageTitle.textContent = titles[pageId].title;
+                        pageSubtitle.textContent = titles[pageId].subtitle;
+                    }
+                }
+            });
+        });
+
+        // Logout button
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to logout?')) {
+                alert('Logged out successfully');
+                // In real app, redirect to login page
+            }
+        });
+
+        // Initialize
+        document.getElementById('companyStats').textContent = '25%';
+        document.getElementById('lcStats').textContent = '3';
+    </script>
+</body>
+</html>
